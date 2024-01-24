@@ -5,9 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 
-function JsonSection({ content, setContent, determineFormat }) {
+interface JsonSectionProps {
+  content: string;
+  setContent: (content: string) => void;
+  determineFormat: (content: string) => void;
+}
+
+function JsonSection({ content, setContent, determineFormat }: JsonSectionProps) {
   const [jsonUrl, setJsonUrl] = useState('');
-  const editorRef = useRef(null);
+  const editorRef = useRef<AceEditor | null>(null);
 
   // Sincroniza el editor Ace con el estado content
   useEffect(() => {
@@ -19,7 +25,7 @@ function JsonSection({ content, setContent, determineFormat }) {
     }
   }, [content]);
 
-  const handleUrlChange = (event) => {
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setJsonUrl(event.target.value);
   };
 
@@ -41,7 +47,7 @@ function JsonSection({ content, setContent, determineFormat }) {
   };
 
   // Manejador para los cambios en el editor Ace
-  const handleContentChange = (newContent) => {
+  const handleContentChange = (newContent: string) => {
     setContent(newContent);
     determineFormat(newContent);
   };

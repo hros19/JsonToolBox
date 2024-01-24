@@ -1,21 +1,25 @@
 
-import { useState } from 'react';
-
 import 'bootstrap-icons/font/bootstrap-icons.css';
+
+interface ToolSectionProps {
+  beautifyContent: () => void;
+  changeIndentation: (indentation: number) => void;
+  validateJson: () => void;
+  convertToCamelCase: () => void;
+  minifyContent: () => void;
+  generateJsonSchema: () => void;
+}
 
 function ToolSection({ 
   beautifyContent, 
   changeIndentation, 
-  jsonSchema, 
-  setJsonSchema, 
   validateJson, 
-  validationResult, 
   convertToCamelCase,
   minifyContent,
   generateJsonSchema
-}) {
+}: ToolSectionProps) {
 
-  const [showValidation, setShowValidation] = useState(false);
+  //const [showValidation, setShowValidation] = useState(false);
 
   return (
     <div className="col-4 tool-section">
@@ -44,7 +48,7 @@ function ToolSection({
         <span>Validate JSON (with schema)</span>
       </div>
 
-      {showValidation && (
+      {/* {showValidation && (
         <div>
           <textarea
             className="form-control"
@@ -57,7 +61,7 @@ function ToolSection({
           </button>
           {validationResult && <div>{validationResult}</div>}
         </div>
-      )}
+      )} */}
 
     </div>
   );

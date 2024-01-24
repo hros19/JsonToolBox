@@ -27,7 +27,7 @@ function App() {
       const validate = ajv.compile(schema);
       const data = JSON.parse(content);
       valid = validate(data);
-    } catch (error) {
+    } catch (error: any) {
       setValidationResult(`Error en la validación: ${error.message}`);
       return;
     }
@@ -42,7 +42,7 @@ function App() {
     }
   };
 
-  const determineFormat = (content) => {
+  const determineFormat = (content: string) => {
     try {
       JSON.parse(content);
       setFormat('json');
@@ -76,11 +76,11 @@ function App() {
     beautifyContent();
   };
   
-  const toCamelCase = (str) => {
+  const toCamelCase = (str: string) => {
     return str.replace(/([-_][a-z])/g, (group) => group.toUpperCase().replace('-', '').replace('_', ''));
   };
   
-  const convertKeysToCamelCase = (obj) => {
+  const convertKeysToCamelCase: any = (obj: any) => {
     if (typeof obj !== 'object' || obj === null) {
       return obj;
     }
@@ -89,7 +89,7 @@ function App() {
       return obj.map((v) => convertKeysToCamelCase(v));
     }
   
-    return Object.keys(obj).reduce((result, key) => {
+    return Object.keys(obj).reduce((result: any, key) => {
       const camelCaseKey = toCamelCase(key);
       result[camelCaseKey] = convertKeysToCamelCase(obj[key]);
       return result;
@@ -127,12 +127,12 @@ function App() {
   };
 
   const generateJsonSchema = () => {
-    const generateSchema = (obj) => {
+    const generateSchema: any = (obj: any) => {
       if (Array.isArray(obj)) {
         const itemType = obj.length > 0 ? generateSchema(obj[0]) : {};
         return { type: "array", items: itemType };
       } else if (typeof obj === 'object' && obj !== null) {
-        const properties = {};
+        const properties: any = {};
         Object.keys(obj).forEach(key => {
           properties[key] = generateSchema(obj[key]);
         });
@@ -161,11 +161,8 @@ function App() {
       <div className="row">
         <ToolSection 
           beautifyContent={beautifyContent} 
-          changeIndentation={changeIndentation} 
-          jsonSchema={jsonSchema}
-          setJsonSchema={setJsonSchema}
+          changeIndentation={changeIndentation}
           validateJson={validateJson}
-          validationResult={validationResult}
           convertToCamelCase={convertToCamelCase}
           minifyContent={minifyContent}
           generateJsonSchema={generateJsonSchema}
