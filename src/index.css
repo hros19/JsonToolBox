@@ -1,0 +1,31 @@
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tool-section .tool-box {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tool-section .tool-box:hover {
+  background-color: #f0f0f0;
+}
+
+.tool-section .tool-box i {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.tool-section .tool-box span {
+  font-size: 16px;
+}
+
