@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AceEditor from 'react-ace';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
+import { toast } from 'react-toastify';
 
 interface JsonSectionProps {
   content: string;
@@ -54,7 +53,6 @@ function JsonSection({ content, setContent, determineFormat }: JsonSectionProps)
 
   return (
     <div className="col-8">
-      <ToastContainer />
       <div className="input-group mb-3">
         <input
           type="text"

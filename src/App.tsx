@@ -22,9 +22,10 @@ function App() {
   const validateJson = () => {
     const ajv = new Ajv();
     let valid;
+    let validate;
     try {
       const schema = JSON.parse(jsonSchema);
-      const validate = ajv.compile(schema);
+      validate = ajv.compile(schema);
       const data = JSON.parse(content);
       valid = validate(data);
     } catch (error: any) {
@@ -32,13 +33,14 @@ function App() {
       return;
     }
 
-    if (valid) {
-      setValidationResult("JSON válido según el esquema.");
-    } else {
-      setValidationResult(`JSON inválido: ${ajv.errorsText()}`);
-
-      // Toast de error
-      toast.error('JSON inválido');
+    if (!valid) {
+      console.log(validate.errors); // Imprimir errores directamente
+      setValidationResult(`Invalid JSON: ${ajv.errorsText(validate.errors)}`);
+      toast.error('Invalid JSON');
+    }
+    else {
+      setValidationResult('Valid JSON');
+      toast.success('Valid JSON');
     }
   };
 
@@ -127,18 +129,29 @@ function App() {
   };
 
   const generateJsonSchema = () => {
-    const generateSchema: any = (obj: any) => {
+    const generateSchema = (obj: any, existingSchema: any = null): any => {
       if (Array.isArray(obj)) {
-        const itemType = obj.length > 0 ? generateSchema(obj[0]) : {};
-        return { type: "array", items: itemType };
-      } else if (typeof obj === 'object' && obj !== null) {
-        const properties: any = {};
-        Object.keys(obj).forEach(key => {
-          properties[key] = generateSchema(obj[key]);
+        let combinedItemType = existingSchema ? existingSchema.items : null;
+        obj.forEach(item => {
+          combinedItemType = generateSchema(item, combinedItemType);
         });
-        return { type: "object", properties };
+        return { type: "array", items: combinedItemType || {} };
+      } else if (typeof obj === 'object') {
+        if (obj === null) {
+          return existingSchema ? { ...existingSchema, type: [...new Set([...existingSchema.type, "null"])] } : { type: ["null"] };
+        }
+        const properties: any = existingSchema ? { ...existingSchema.properties } : {};
+        Object.keys(obj).forEach(key => {
+          const value = obj[key];
+          properties[key] = generateSchema(value, properties[key]);
+        });
+        return { type: ["object"], properties };
       } else {
-        return { type: typeof obj };
+        const newType = typeof obj;
+        if (existingSchema) {
+          return { ...existingSchema, type: [...new Set([...existingSchema.type, newType])] };
+        }
+        return { type: [newType] };
       }
     };
   
@@ -146,10 +159,8 @@ function App() {
       const parsedJson = JSON.parse(content);
       const schema = generateSchema(parsedJson);
       setJsonSchema(JSON.stringify(schema, null, 2));
-    } catch (error) {
-      console.error('Error generating JSON schema:', error);
-
-      // Toast de error
+    } catch (error: any) {
+      console.error('Error generating JSON schema:', error.message);
       toast.error('Error generating JSON schema');
     }
   };
