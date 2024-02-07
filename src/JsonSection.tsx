@@ -14,7 +14,6 @@ function JsonSection({ content, setContent, determineFormat }: JsonSectionProps)
   const [jsonUrl, setJsonUrl] = useState('');
   const editorRef = useRef<AceEditor | null>(null);
 
-  // Sincroniza el editor Ace con el estado content
   useEffect(() => {
     if (editorRef.current) {
       const editorContent = editorRef.current.editor.getValue();
@@ -45,7 +44,6 @@ function JsonSection({ content, setContent, determineFormat }: JsonSectionProps)
     }
   };
 
-  // Manejador para los cambios en el editor Ace
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
     determineFormat(newContent);

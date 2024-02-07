@@ -29,12 +29,12 @@ function App() {
       const data = JSON.parse(content);
       valid = validate(data);
     } catch (error: any) {
-      setValidationResult(`Error en la validación: ${error.message}`);
+      setValidationResult(`Error on validation: ${error.message}`);
       return;
     }
 
     if (!valid) {
-      console.log(validate.errors); // Imprimir errores directamente
+      console.log(validate.errors);
       setValidationResult(`Invalid JSON: ${ajv.errorsText(validate.errors)}`);
       toast.error('Invalid JSON');
     }
@@ -106,7 +106,6 @@ function App() {
     } catch (error) {
       console.error('Error converting to camelCase:', error);
 
-      // Toast de error
       toast.error('Error converting to camelCase');
     }
   };
@@ -189,7 +188,7 @@ function App() {
           <textarea
             className="form-control"
             value={jsonSchema}
-            onChange={(e) => setJsonSchema(e.target.value)} // Permite la edición del esquema
+            onChange={(e) => setJsonSchema(e.target.value)}
             style={{ height: '200px' }}
           />
           {validationResult && <div>{validationResult}</div>} 

@@ -19,8 +19,6 @@ function ToolSection({
   generateJsonSchema
 }: ToolSectionProps) {
 
-  //const [showValidation, setShowValidation] = useState(false);
-
   return (
     <div className="col-4 tool-section">
       <div className="tool-box" onClick={beautifyContent}>
@@ -47,21 +45,6 @@ function ToolSection({
         <i className="bi bi-check2-circle"></i>
         <span>Validate JSON (with schema)</span>
       </div>
-
-      {/* {showValidation && (
-        <div>
-          <textarea
-            className="form-control"
-            placeholder="Ingrese el esquema JSON aquí"
-            value={jsonSchema}
-            onChange={(e) => setJsonSchema(e.target.value)}
-          />
-          <button className="btn btn-primary" onClick={validateJson}>
-            Validar
-          </button>
-          {validationResult && <div>{validationResult}</div>}
-        </div>
-      )} */}
 
     </div>
   );
